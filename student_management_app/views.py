@@ -22,7 +22,13 @@ def doLogin(request):
         user = EmailBackEnd.authenticate(request, username=request.POST.get("email"),password=request.POST.get("password"))
         if user != None:
             login(request,user)
-            return HttpResponseRedirect('/admin_home')
+            if user.user_type=="1":
+                return HttpResponseRedirect('/admin_home')
+            elif user.user_type=="2":
+                return HttpResponse("Staff login " +str(user.user_type))
+            else:
+                return HttpResponse("Estudiante Login "+str(user.user_type))
+            # return HttpResponseRedirect('/admin_home')
             # return HttpResponse("Email : " + request.POST.get("email") + "Password : " + request.POST.get("password"))
         else:
             messages.error(request,"Inicio Sesion Invalido Detalles")
