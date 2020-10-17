@@ -1,6 +1,6 @@
 {% extends 'hod_templates/base_template.html' %}
 {% block page_title %}
-  Edit Student | Username: {{ student.admin.username }} | #ID : {{ student.admin.id }}
+  Edit Student | Username: {{ username }} | #ID : {{ id }}
 {% endblock page_title %}
 {% block main_content %}
     <!-- Main content -->
@@ -15,86 +15,8 @@
                         </div>
                         <!-- /.card-header -->
                         <!-- form start -->
-                        <form role="form" action="/edit_student_save" method="post" enctype="multipart/form-data">
-                            {% csrf_token %}
-                            <div class="card-body">
-                                <div class="form-group">
-                                    <label>Correo Electronico</label>
-                                    <input type="email" class="form-control" name="email" placeholder="Inserte Correo" value="{{ student.admin.email }}">
-                                </div>
-
-                                <div class="form-group">
-                                    <label>Nombres</label>
-                                    <input type="text" class="form-control" name="first_name" placeholder="Nombres" value="{{ student.admin.first_name }}" >
-                                </div>
-                                <div class="form-group">
-                                    <label>Apellidos</label>
-                                    <input type="text" class="form-control" name="last_name" placeholder="Apellidos" value="{{ student.admin.last_name }}">
-                                </div>
-                                <div class="form-group">
-                                    <label>Username</label>
-                                    <input type="text" class="form-control" name="username" placeholder="Username" value="{{ student.admin.username }}">
-                                    <input type="hidden" name="student_id"  value="{{ student.admin.id }}">
-                                </div>
-                                <div class="form-group">
-                                    <label>Direccion</label>
-                                    <input type="text" class="form-control" name="address" placeholder="Direccion" value="{{ student.address }}">
-                                </div>
-                                <div class="form-group">
-                                    <label>Course</label>
-                                   <select class="form-control" name="course">
-                                       {% for course in courses  %}
-                                           <option value="{{ course.id }}" {% if  course.id == student.course_id.id %} selected
-                                           {% endif %}>{{ course.course_name }}</option>
-                                       {% endfor %}
-                                   </select>
-                                </div>
-                                <div class="form-group">
-                                    <label>Sexo</label>
-                                   <select class="form-control" name="sex">
-                                           <option {% if  student.gender == "Male" %} selected{% endif %}>Masculino</option>
-                                           <option {% if  student.gender == "Female" %} selected{% endif %}>Femenino</option>
-
-                                   </select>
-                                </div>
-                             <div class="form-group">
-                                    <label>Session Start</label>
-                                    <input type="date" class="form-control" name="session_start" placeholder="Session Start Year" value="{{ student.session_start_year | date:"Y-m-d"}}">
-                                </div>
-                             <div class="form-group">
-                                    <label>Session End</label>
-                                    <input type="date" class="form-control" name="session_end" placeholder="Session End Year" value="{{ student.session_start_end | date:"Y-m-d" }}">
-                                </div>
-                            <div class="form-group">
-                                    <label>Imagen Perfil</label>
-                                    <input type="file" class="form-control" name="profile_pic"
-                                           placeholder="Session End Year">
-                                </div>
-                                <div class="form-group">
-                                    {% if messages %}
-
-                                            {% for message in messages %}
-                                                {% if message.tags == 'error' %}
-                                                    <div class="alert alert-danger"
-                                                         style="margin-top: 10px;">{{ message }}</div>
-                                                {% endif %}
-                                                  {% if message.tags == 'success' %}
-                                                    <div class="alert alert-success"
-                                                         style="margin-top: 10px;">{{ message }}</div>
-                                                {% endif %}
-                                            {% endfor %}
-
-                                    {% endif %}
-                                    <!-- /.col -->
-                                </div>
-
-                            </div>
-                            <!-- /.card-body -->
-
-                            <div class="card-footer">
-                                <button type="submit" class="btn btn-primary btn-block">Guardar Student</button>
-                            </div>
-                        </form>
+                            {% url 'edit_student_save' as action_path %}
+                        {% include 'hod_templates/form_template.html' with messages=messages form=form action_path=action_path button_text="Editar Estudiante" %}
                     </div>
                     <!-- /.card -->
 
