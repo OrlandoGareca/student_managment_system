@@ -30,13 +30,17 @@
                     {% url 'staff_home' as staff_home %}
                     <a href="{{ staff_home }}" class="nav-link {% if request.path == staff_home %} active {% endif %}">
                         <i class="nav-icon fas fa-th"></i>
-                        <p>
-                           Home
-
-                        </p>
+                        <p>Home</p>
                     </a>
                 </li>
 
+                <li class="nav-item">
+                    {% url 'staff_take_attendance' as staff_take_attendance %}
+                    <a href="{{ staff_take_attendance }}" class="nav-link {% if request.path == staff_take_attendance %} active {% endif %}">
+                        <i class="nav-icon fas fa-th"></i>
+                        <p>Take Attendance</p>
+                    </a>
+                </li>
 
             </ul>
         </nav>
