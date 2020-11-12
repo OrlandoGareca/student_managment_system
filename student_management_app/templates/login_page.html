@@ -52,8 +52,12 @@
                 <div class="row">
 
                     <!-- /.col -->
-                    <div class="col-4">
+                    <div class="col-12">
                         <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+                    </div>
+                    <br>
+                    <div class="col-12 text-center" style="text-align: right" >
+                        <a href="{% url 'password_reset' %}">Reset Password</a>
                     </div>
                     {% if messages %}
                     <div class="col-12">

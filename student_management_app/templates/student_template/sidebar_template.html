@@ -25,7 +25,6 @@
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                 <!-- Add icons to the links using the .nav-icon class
                      with font-awesome or any other icon font library -->
-
                 <li class="nav-item">
                     {% url 'student_home' as student_home %}
                     <a href="{{ student_home }}" class="nav-link {% if request.path == student_home %} active {% endif %}">
@@ -36,6 +35,17 @@
                         </p>
                     </a>
                 </li>
+{#             <li class="nav-item">#}
+{#                    {% url 'student_view_attendance' as student_view_attendance %}#}
+{#                    <a href="{{ student_view_attendance }}" class="nav-link {% if request.path == student_view_attendance %} active {% endif %}">#}
+{#                        <i class="nav-icon fas fa-th"></i>#}
+{#                        <p>#}
+{#                           Home#}
+{##}
+{#                        </p>#}
+{#                    </a>#}
+{#                </li>#}
+
 
 
             </ul>

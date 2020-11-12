@@ -124,11 +124,25 @@
                         </p>
                     </a>
 
-                </li><li class="nav-item has-treeview">
+                </li>
+{#             <li class="nav-item has-treeview">#}
+{#                    {% url 'add_session_save' as add_session_save %}#}
+{##}
+{#                    <a href="{{ add_session_save }}"#}
+{#                       class="nav-link {% if request.path == add_session_save %} active {% endif %} ">#}
+{#                        <i class="nav-icon fas fa-chart-pie"></i>#}
+{#                        <p>#}
+{#                           Add Session Year#}
+{##}
+{#                        </p>#}
+{#                    </a>#}
+{##}
+{#                </li>#}
+                <li class="nav-item has-treeview">
                     {% url 'manage_session' as manage_session %}
 
                     <a href="{{ manage_session }}"
-                       class="nav-link {% if request.path == manage_subject %} active {% endif %} ">
+                       class="nav-link {% if request.path == manage_session %} active {% endif %} ">
                         <i class="nav-icon fas fa-chart-pie"></i>
                         <p>
                             Manage Session Year
@@ -137,6 +151,7 @@
                     </a>
 
                 </li>
+
                 <li class="nav-item has-treeview">
                     <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-chart-pie"></i>

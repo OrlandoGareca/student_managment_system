@@ -61,7 +61,7 @@ def add_course_save(request):
 
 
 def add_student(request):
-    # courses = Courses.objects.all()
+    courses = Courses.objects.all()
     form = AddStudentForm()
     return render(request, "hod_templates/add_student_template.html", {"form": form})
 
@@ -80,6 +80,7 @@ def add_student_save(request):
             address = form.cleaned_data["address"]
             session_year_id = form.cleaned_data["session_year_id"]
             course_id = form.cleaned_data["course"]
+            print(course_id)
             sex = form.cleaned_data["sex"]
 
             profile_pic = request.FILES['profile_pic']
