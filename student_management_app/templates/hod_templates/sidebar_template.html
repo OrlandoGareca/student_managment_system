@@ -38,7 +38,7 @@
                 </li>
                 <li class="nav-item has-treeview">
                     {% url 'manage_staff' as manage_staff %}
-                 {% url 'edit_staff' staff_id=id as edit_staff %}
+                    {% url 'edit_staff' staff_id=id as edit_staff %}
                     <a href="{{ manage_staff }}"
                        class="nav-link {% if request.path == manage_staff %} active {% endif %} {% if request.path == edit_staff %} active {% endif %}">
                         <i class="nav-icon fas fa-copy"></i>
@@ -63,7 +63,7 @@
                 </li>
                 <li class="nav-item has-treeview">
                     {% url 'manage_course' as manage_course %}
-                   {% url 'edit_course' course_id=id as edit_course %}
+                    {% url 'edit_course' course_id=id as edit_course %}
                     <a href="{{ manage_course }}"
                        class="nav-link {% if request.path == manage_course %} active {% endif %} {% if request.path == edit_course %} active {% endif %}">
                         <i class="nav-icon fas fa-copy"></i>
@@ -114,7 +114,7 @@
                 </li>
                 <li class="nav-item has-treeview">
                     {% url 'manage_subject' as manage_subject %}
-                 {% url 'edit_subject' subject_id=id as edit_subject %}
+                    {% url 'edit_subject' subject_id=id as edit_subject %}
                     <a href="{{ manage_subject }}"
                        class="nav-link {% if request.path == manage_subject %} active {% endif %} {% if request.path == edit_subject %} active {% endif %}">
                         <i class="nav-icon fas fa-chart-pie"></i>
@@ -125,19 +125,19 @@
                     </a>
 
                 </li>
-{#             <li class="nav-item has-treeview">#}
-{#                    {% url 'add_session_save' as add_session_save %}#}
-{##}
-{#                    <a href="{{ add_session_save }}"#}
-{#                       class="nav-link {% if request.path == add_session_save %} active {% endif %} ">#}
-{#                        <i class="nav-icon fas fa-chart-pie"></i>#}
-{#                        <p>#}
-{#                           Add Session Year#}
-{##}
-{#                        </p>#}
-{#                    </a>#}
-{##}
-{#                </li>#}
+                {#             <li class="nav-item has-treeview">#}
+                {#                    {% url 'add_session_save' as add_session_save %}#}
+                {##}
+                {#                    <a href="{{ add_session_save }}"#}
+                {#                       class="nav-link {% if request.path == add_session_save %} active {% endif %} ">#}
+                {#                        <i class="nav-icon fas fa-chart-pie"></i>#}
+                {#                        <p>#}
+                {#                           Add Session Year#}
+                {##}
+                {#                        </p>#}
+                {#                    </a>#}
+                {##}
+                {#                </li>#}
                 <li class="nav-item has-treeview">
                     {% url 'manage_session' as manage_session %}
 
@@ -152,32 +152,23 @@
 
                 </li>
 
-                <li class="nav-item has-treeview">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-chart-pie"></i>
-                        <p>
-                            View Attendance
-                            <i class="right fas fa-angle-left"></i>
-                        </p>
-                    </a>
 
-                </li>
                 <li class="nav-item has-treeview">
-                    <a href="#" class="nav-link">
+                     {% url 'student_feedback_message' as student_feedback_message %}
+                    <a href="{% url 'student_feedback_message' %}" class="nav-link {% if request.path == student_feedback_message %} active {% endif %} ">
                         <i class="nav-icon fas fa-chart-pie"></i>
                         <p>
                             Student FeedBack
-                            <i class="right fas fa-angle-left"></i>
                         </p>
                     </a>
 
                 </li>
                 <li class="nav-item has-treeview">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-chart-pie"></i>
+                  {% url 'staff_feedback_message' as staff_feedback_message %}
+                    <a href="{% url 'staff_feedback_message' %}" class="nav-link {% if request.path == staff_feedback_message %} active {% endif %} ">
+                            <i class="nav-icon fas fa-chart-pie"></i>
                         <p>
                             Staff Feedback
-                            <i class="right fas fa-angle-left"></i>
                         </p>
                     </a>
 
@@ -187,7 +178,6 @@
                         <i class="nav-icon fas fa-chart-pie"></i>
                         <p>
                             Student Leave
-                            <i class="right fas fa-angle-left"></i>
                         </p>
                     </a>
 
@@ -197,10 +187,17 @@
                         <i class="nav-icon fas fa-chart-pie"></i>
                         <p>
                             Staff Leave
-                            <i class="right fas fa-angle-left"></i>
                         </p>
                     </a>
 
+                </li>
+                <li class="nav-item has-treeview">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-chart-pie"></i>
+                        <p>
+                            View Attendace
+                        </p>
+                    </a>
                 </li>
 
             </ul>
