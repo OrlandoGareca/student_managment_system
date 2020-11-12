@@ -86,6 +86,7 @@ def get_attendance_dates(request):
         attendance_obj.append(data)
     return JsonResponse(json.dumps(attendance_obj), safe=False)
 
+
 @csrf_exempt
 def get_attendance_student(request):
     attendance_date = request.POST.get("attendance_date")
@@ -93,11 +94,14 @@ def get_attendance_student(request):
     attendance_date = AttendanceReport.objects.filter(attendance_id=attendance)
     list_data = []
     for student in attendance_date:
-        data_small = {"id": student.student_id.admin.id, "name": student.student_id.admin.first_name + " " + student.student_id.admin.last_name,"status":student.status}
+        data_small = {"id": student.student_id.admin.id,
+                      "name": student.student_id.admin.first_name + " " + student.student_id.admin.last_name,
+                      "status": student.status}
         list_data.append(data_small)
 
     return JsonResponse(json.dumps(list_data), content_type="application/json", safe=False)
     # return None
+
 
 @csrf_exempt
 def save_updateattendance_data(request):
@@ -109,7 +113,7 @@ def save_updateattendance_data(request):
         for stud in json_student:
             student = Students.objects.get(admin=stud['id'])
             attendance_report = AttendanceReport.objects.get(student_id=student, attendance_id=attendance)
-            attendance_report.status=stud['status']
+            attendance_report.status = stud['status']
             attendance_report.save()
         return HttpResponse("OK")
     except:
@@ -119,49 +123,48 @@ def save_updateattendance_data(request):
 def staff_apply_leave(request):
     staff_obj = Staffs.objects.get(admin=request.user.id)
     leave_data = LeaveReportStaff.object.filter(staff_id=staff_obj)
-    return render(request,"staff_template/staff_apply_leave.html",{"leave_data":leave_data})
+    return render(request, "staff_template/staff_apply_leave.html", {"leave_data": leave_data})
 
 
 def staff_feedback(request):
-    staff_id=Staffs.objects.get(admin=request.user.id)
-    feedback_data=FeedBackStaffs.object.filter(staff_id=staff_id)
-    return render(request,"staff_template/staff_feedback.html",{"feedback_data":feedback_data})
+    staff_id = Staffs.objects.get(admin=request.user.id)
+    feedback_data = FeedBackStaffs.object.filter(staff_id=staff_id)
+    return render(request, "staff_template/staff_feedback.html", {"feedback_data": feedback_data})
 
 
 def staff_apply_leave_save(request):
-    if request.method !="POST":
+    if request.method != "POST":
 
         return HttpResponseRedirect(reverse("staff_apply_leave"))
     else:
-        leave_date=request.POST.get("leave_date")
-        leave_msg=request.POST.get("leave_msg")
+        leave_date = request.POST.get("leave_date")
+        leave_msg = request.POST.get("leave_msg")
 
-        staff_obj=Staffs.objects.get(admin=request.user.id)
+        staff_obj = Staffs.objects.get(admin=request.user.id)
         try:
-            leave_report=LeaveReportStaff(staff_id=staff_obj,leave_date=leave_date,leave_message=leave_msg,leave_status=0)
+            leave_report = LeaveReportStaff(staff_id=staff_obj, leave_date=leave_date, leave_message=leave_msg,
+                                            leave_status=0)
             leave_report.save()
-            messages.success(request,"Successfully Aplied for Leave")
+            messages.success(request, "Successfully Aplied for Leave")
             return HttpResponseRedirect(reverse("staff_apply_leave"))
         except:
-            messages.error(request,"Failed to Apply fr Leave")
-            return  HttpResponseRedirect(reverse("staff_apply_leave"))
-
+            messages.error(request, "Failed to Apply fr Leave")
+            return HttpResponseRedirect(reverse("staff_apply_leave"))
 
 
 def staff_feedback_save(request):
-    if request.method !="POST":
+    if request.method != "POST":
 
         return HttpResponseRedirect(reverse("staff_feedback_save"))
     else:
-        feedback_msg=request.POST.get("feedback_msg")
+        feedback_msg = request.POST.get("feedback_msg")
 
-
-        staff_obj=Staffs.objects.get(admin=request.user.id)
+        staff_obj = Staffs.objects.get(admin=request.user.id)
         try:
-            feedback=FeedBackStaffs(staff_id=staff_obj,feedback=feedback_msg,feedback_reply="")
+            feedback = FeedBackStaffs(staff_id=staff_obj, feedback=feedback_msg, feedback_reply="")
             feedback.save()
-            messages.success(request,"Successfully Send Feedback")
+            messages.success(request, "Successfully Send Feedback")
             return HttpResponseRedirect(reverse("staff_feedback"))
         except:
-            messages.error(request,"Failed to Send Feedback")
-            return  HttpResponseRedirect(reverse("staff_feedback"))
+            messages.error(request, "Failed to Send Feedback")
+            return HttpResponseRedirect(reverse("staff_feedback"))

@@ -5,6 +5,7 @@ from django.core.files.storage import FileSystemStorage
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
+from django.views.decorators.csrf import csrf_exempt
 
 from student_management_app.forms import AddStudentForm, EditStudentForm
 from student_management_app.models import CustomUser, Courses, Subjects, Staffs, Students, SessionYearModel
@@ -89,12 +90,12 @@ def add_student_save(request):
             profile_pic_url = fs.url(filename)
             try:
                 user = CustomUser.objects.create_user(username=username, password=password, email=email,
-                                                          last_name=last_name,
-                                                          first_name=first_name, user_type=3)
+                                                      last_name=last_name,
+                                                      first_name=first_name, user_type=3)
                 user.students.address = address
                 course_obj = Courses.objects.get(id=course_id)
                 user.students.course_id = course_obj
-                session_year=SessionYearModel.object.get(id=session_year_id)
+                session_year = SessionYearModel.object.get(id=session_year_id)
                 user.students.session_year_id = session_year
                 user.students.gender = sex
                 user.students.profile_pic = profile_pic_url
@@ -184,7 +185,7 @@ def edit_staff_save(request):
             return HttpResponseRedirect(reverse("edit_staff", kwargs={"staff_id": staff_id}))
         except:
             messages.error(request, "Staff no se edito")
-            return HttpResponseRedirect(reverse("edit_staff",kwargs={"staff_id": staff_id}))
+            return HttpResponseRedirect(reverse("edit_staff", kwargs={"staff_id": staff_id}))
 
 
 def edit_student(request, student_id):
@@ -255,10 +256,10 @@ def edit_student_save(request):
                 student.save()
                 del request.session['student_id']
                 messages.success(request, "Student Editado Satisfactoriamente")
-                return HttpResponseRedirect(reverse("edit_student",kwargs={"student_id": student_id}))
+                return HttpResponseRedirect(reverse("edit_student", kwargs={"student_id": student_id}))
             except:
                 messages.error(request, "Student no se edito")
-                return HttpResponseRedirect(reverse("edit_student", kwargs={"student_id":student_id}))
+                return HttpResponseRedirect(reverse("edit_student", kwargs={"student_id": student_id}))
         else:
             form = EditStudentForm(request.POST)
             student = Students.objects.get(admin=student_id)
@@ -293,10 +294,10 @@ def edit_subject_save(request):
 
             subject.save()
             messages.success(request, "Subject Editado Satisfactoriamente")
-            return HttpResponseRedirect(reverse("edit_subject" ,kwargs={"subject_id": subject_id}))
+            return HttpResponseRedirect(reverse("edit_subject", kwargs={"subject_id": subject_id}))
         except:
             messages.error(request, "Subject no se edito")
-            return HttpResponseRedirect(reverse("edit_subject",kwargs={"subject_id": subject_id}))
+            return HttpResponseRedirect(reverse("edit_subject", kwargs={"subject_id": subject_id}))
 
 
 def edit_course(request, course_id):
@@ -315,27 +316,46 @@ def edit_course_save(request):
             course.course_name = course_name
             course.save()
             messages.success(request, "Course Editado Satisfactoriamente")
-            return HttpResponseRedirect(reverse("edit_course",kwargs={ "course_id":course_id}))
+            return HttpResponseRedirect(reverse("edit_course", kwargs={"course_id": course_id}))
         except:
             messages.error(request, "Course no se edito")
-            return HttpResponseRedirect(reverse("edit_course", kwargs={ "course_id":course_id}))
+            return HttpResponseRedirect(reverse("edit_course", kwargs={"course_id": course_id}))
 
 
 def manage_session(request):
-    return render(request,"hod_templates/manage_session_template.html")
+    return render(request, "hod_templates/manage_session_template.html")
 
 
 def add_session_save(request):
-    if request.method!="POST":
+    if request.method != "POST":
         return HttpResponseRedirect(reverse("manage_session"))
     else:
-        session_start_year=request.POST.get("session_start")
-        session_start_end=request.POST.get("session_end")
+        session_start_year = request.POST.get("session_start")
+        session_start_end = request.POST.get("session_end")
         try:
-            sessionyear=SessionYearModel(session_start_year=session_start_year,session_start_end=session_start_end)
+            sessionyear = SessionYearModel(session_start_year=session_start_year, session_start_end=session_start_end)
             sessionyear.save()
             messages.success(request, "Satisfactorio Añadido Session")
             return HttpResponseRedirect(reverse("manage_session"))
         except:
             messages.error(request, "Falla al añadir Session")
             return HttpResponseRedirect(reverse("manage_session"))
+
+
+@csrf_exempt
+def check_email_exist(request):
+    email = request.POST.get("email")
+    user_obj = CustomUser.objects.filter(email=email).exists()
+    if user_obj:
+        return HttpResponse(True)
+    else:
+        return HttpResponse(False)
+
+@csrf_exempt
+def check_username_exist(request):
+    username = request.POST.get("username")
+    user_obj = CustomUser.objects.filter(username=username).exists()
+    if user_obj:
+        return HttpResponse(True)
+    else:
+        return HttpResponse(False)
