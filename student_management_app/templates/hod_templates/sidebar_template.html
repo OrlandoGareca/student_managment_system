@@ -16,7 +16,7 @@
                 <img src="{% static "dist/img/user2-160x160.jpg" %}" class="img-circle elevation-2" alt="User Image">
             </div>
             <div class="info">
-                <a href="#" class="d-block">{{ user.username }}</a>
+                <a href="{% url 'admin_profile' %}" class="d-block">{{ user.username }}</a>
             </div>
         </div>
 
@@ -154,8 +154,9 @@
 
 
                 <li class="nav-item has-treeview">
-                     {% url 'student_feedback_message' as student_feedback_message %}
-                    <a href="{% url 'student_feedback_message' %}" class="nav-link {% if request.path == student_feedback_message %} active {% endif %} ">
+                    {% url 'student_feedback_message' as student_feedback_message %}
+                    <a href="{% url 'student_feedback_message' %}"
+                       class="nav-link {% if request.path == student_feedback_message %} active {% endif %} ">
                         <i class="nav-icon fas fa-chart-pie"></i>
                         <p>
                             Student FeedBack
@@ -164,9 +165,10 @@
 
                 </li>
                 <li class="nav-item has-treeview">
-                  {% url 'staff_feedback_message' as staff_feedback_message %}
-                    <a href="{% url 'staff_feedback_message' %}" class="nav-link {% if request.path == staff_feedback_message %} active {% endif %} ">
-                            <i class="nav-icon fas fa-chart-pie"></i>
+                    {% url 'staff_feedback_message' as staff_feedback_message %}
+                    <a href="{% url 'staff_feedback_message' %}"
+                       class="nav-link {% if request.path == staff_feedback_message %} active {% endif %} ">
+                        <i class="nav-icon fas fa-chart-pie"></i>
                         <p>
                             Staff Feedback
                         </p>
@@ -174,25 +176,33 @@
 
                 </li>
                 <li class="nav-item has-treeview">
-                    <a href="#" class="nav-link">
+                    {% url 'student_leave_view' as student_leave_view %}
+                    <a href="{% url 'student_leave_view' %}"
+                       class="nav-link {% if request.path == student_leave_view %} active {% endif %} ">
                         <i class="nav-icon fas fa-chart-pie"></i>
                         <p>
                             Student Leave
                         </p>
                     </a>
-
                 </li>
                 <li class="nav-item has-treeview">
-                    <a href="#" class="nav-link">
+                    {% url 'staff_leave_view' as staff_leave_view %}
+
+                    <a href="{% url 'staff_leave_view' %}"
+                       class="nav-link {% if request.path == staff_leave_view %} active {% endif %} ">
                         <i class="nav-icon fas fa-chart-pie"></i>
                         <p>
-                            Staff Leave
+                             Staff Leave
                         </p>
                     </a>
 
                 </li>
+
                 <li class="nav-item has-treeview">
-                    <a href="#" class="nav-link">
+                    {% url 'admin_view_attendance' as admin_view_attendance %}
+
+                    <a href="{% url 'admin_view_attendance' %}"
+                       class="nav-link {% if request.path == admin_view_attendance %} active {% endif %} ">
                         <i class="nav-icon fas fa-chart-pie"></i>
                         <p>
                             View Attendace
