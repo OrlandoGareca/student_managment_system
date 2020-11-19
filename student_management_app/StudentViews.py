@@ -10,7 +10,33 @@ from student_management_app.models import Students, Courses, Subjects, CustomUse
 
 
 def student_home(request):
-    return render(request, "student_template/student_home_template.html")
+    student_obj = Students.objects.get(admin=request.user.id)
+    # print(student_obj)
+    attendance_total = AttendanceReport.objects.filter(student_id=student_obj).count()
+    # print(attendance_total)
+    attendance_present = AttendanceReport.objects.filter(student_id=student_obj, status=True).count()
+    # print(attendance_present)
+    attendance_absent = AttendanceReport.objects.filter(student_id=student_obj, status=False).count()
+    # print(attendance_absent)
+    course=Courses.objects.get(id=student_obj.course_id.id)
+    # print(course)
+    subjects=Subjects.objects.filter(course_id=course).count()
+    # print(subjects+"asfd")
+
+    subject_name=[]
+    data_present=[]
+    data_absent=[]
+    subject_data=Subjects.objects.filter(course_id=student_obj.course_id)
+    for subject in subject_data:
+        attendance=Attendance.objects.filter(subject_id=subject.id)
+        attendance_present_count=AttendanceReport.objects.filter(attendance_id__in=attendance,status=True,student_id=student_obj.id).count()
+        attendance_absentt_count=AttendanceReport.objects.filter(attendance_id__in=attendance,status=False,student_id=student_obj.id).count()
+        subject_name.append(subject.subject_name)
+        data_present.append(attendance_present_count)
+        data_absent.append(attendance_absentt_count)
+    return render(request, "student_template/student_home_template.html",
+                  {"total_attendance": attendance_total, "absent_attendance": attendance_absent,
+                   "present_attendance": attendance_present,"subjects":subjects,"data_name":subject_name,"data1":data_present,"data2":data_absent})
 
 
 def student_view_attendance(request):
@@ -24,7 +50,7 @@ def student_view_attendance_post(request):
     subject_id = request.POST.get("subject")
     start_date = request.POST.get("start_date")
     end_date = request.POST.get("end_date")
-    print(subject_id,start_date,end_date)
+    print(subject_id, start_date, end_date)
 
     start_data_parse = datetime.datetime.strptime(start_date, "%Y-%m-%d").date()
     end_data_parse = datetime.datetime.strptime(end_date, "%Y-%m-%d").date()
@@ -39,13 +65,14 @@ def student_view_attendance_post(request):
 
     # else:
     #     print("not date")
-    return render(request,"student_template/student_attendance_data.html",{"attendance_reports":attendance_reports})
+    return render(request, "student_template/student_attendance_data.html", {"attendance_reports": attendance_reports})
 
 
 def student_apply_leave(request):
     staff_obj = Students.objects.get(admin=request.user.id)
     leave_data = LeaveReportStudent.object.filter(student_id=staff_obj)
     return render(request, "student_template/student_apply_leave.html", {"leave_data": leave_data})
+
 
 def student_apply_leave_save(request):
     if request.method != "POST":
@@ -58,7 +85,7 @@ def student_apply_leave_save(request):
         student_obj = Students.objects.get(admin=request.user.id)
         try:
             leave_report = LeaveReportStudent(student_id=student_obj, leave_date=leave_date, leave_message=leave_msg,
-                                            leave_status=0)
+                                              leave_status=0)
             leave_report.save()
             messages.success(request, "Successfully Aplied for Leave")
             return HttpResponseRedirect(reverse("student_apply_leave"))
@@ -67,12 +94,10 @@ def student_apply_leave_save(request):
             return HttpResponseRedirect(reverse("student_apply_leave"))
 
 
-
 def student_feedback(request):
     staff_id = Students.objects.get(admin=request.user.id)
     feedback_data = FeedBackStudent.object.filter(student_id=staff_id)
     return render(request, "student_template/student_feedback.html", {"feedback_data": feedback_data})
-
 
 def student_feedback_save(request):
     if request.method != "POST":
@@ -92,11 +117,10 @@ def student_feedback_save(request):
             return HttpResponseRedirect(reverse("student_feedback"))
 
 
-
 def student_profile(request):
     user = CustomUser.objects.get(id=request.user.id)
     student = Students.objects.get(admin=user)
-    return render(request, "student_template/student_profile.html", {"user": user,"student":student})
+    return render(request, "student_template/student_profile.html", {"user": user, "student": student})
 
 
 def student_profile_save(request):
@@ -116,8 +140,8 @@ def student_profile_save(request):
                 customuser.set_password(password)
             customuser.save()
 
-            student=Students.objects.get(admin=customuser.id)
-            student.address=address
+            student = Students.objects.get(admin=customuser.id)
+            student.address = address
             student.save()
             messages.success(request, "Satisfactorio Update Profile")
             return HttpResponseRedirect(reverse("student_profile"))
