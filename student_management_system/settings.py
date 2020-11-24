@@ -24,7 +24,7 @@ SECRET_KEY = 'd-iwtvu&8=03387)8mhq4blgc3b(_vr7^5j9z_1#+_cu4a^%gw'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["studentmanagesystem.herokuapp.com"]
 
 # Application definition
 
@@ -39,6 +39,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'whitenoise.middleware.WhiteNoiseMiddleware'
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -137,7 +138,6 @@ STATIC_ROOT = os.path.join(BASE_DIR, "static")
 AUTH_USER_MODEL = "student_management_app.CustomUser"
 AUTHENTICATION_BACKENDS = ['student_management_app.EmailBackEnd.EmailBackEnd']
 
-
 # EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
 # EMAIL_FILE_PATH = os.path.join(BASE_DIR, "sent_email")
 EMAIL_HOST = "smtp.gmail.com"
@@ -146,3 +146,9 @@ EMAIL_HOST_USER = "orlando.dilmar.gareca@gmail.com"
 EMAIL_HOST_PASSWORD = "malaleche"
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = "Stundent management System <orlando.dilmar.gareca@gmail.com>"
+
+STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
+import dj_database_url
+
+prod_db = dj_database_url.config(conn_max_age=500)
+DATABASES['default'].update(prod_db)
