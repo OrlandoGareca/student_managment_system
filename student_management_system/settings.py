@@ -147,7 +147,7 @@ EMAIL_HOST_PASSWORD = "malaleche"
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = "Stundent management System <orlando.dilmar.gareca@gmail.com>"
 
-STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 import dj_database_url
 
 prod_db = dj_database_url.config(conn_max_age=500)
