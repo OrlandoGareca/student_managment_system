@@ -24,7 +24,8 @@ SECRET_KEY = 'd-iwtvu&8=03387)8mhq4blgc3b(_vr7^5j9z_1#+_cu4a^%gw'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["studentmanagesystem.herokuapp.com"]
+# ALLOWED_HOSTS = ["studentmanagesystem.herokuapp.com"]
+ALLOWED_HOSTS = []
 
 # Application definition
 
