@@ -4,6 +4,7 @@ from django.contrib import messages
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
+from django.views.decorators.csrf import csrf_exempt
 
 from student_management_app.models import Students, Courses, Subjects, CustomUser, Attendance, AttendanceReport, \
     LeaveReportStudent, FeedBackStudent
@@ -148,3 +149,14 @@ def student_profile_save(request):
         except:
             messages.error(request, "Falla to update Profile")
             return HttpResponseRedirect(reverse("student_profile"))
+
+@csrf_exempt
+def student_fcmtoken_save(request):
+    token = request.POST.get("token")
+    try:
+        student = Students.objects.get(admin=request.user.id)
+        student.fcm_toke = token
+        student.save()
+        return HttpResponse("True")
+    except:
+        return HttpResponse("False")

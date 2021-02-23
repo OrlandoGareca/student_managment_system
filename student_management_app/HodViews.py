@@ -558,3 +558,30 @@ def admin_profile_save(request):
         except:
             messages.error(request, "Falla to update Profile")
             return HttpResponseRedirect(reverse("admin_profile"))
+
+
+def admin_send_notification_staff(request):
+    staffs = Staffs.objects.all()
+    return render(request,"hod_templates/staff_notification.html", {"staffs": staffs})
+
+
+def admin_send_notification_student(request):
+    students = Students.objects.all()
+
+    return render(request, "hod_templates/student_notification.html",{"students":students})
+
+
+def send_student_notification(request):
+    id=request.POST.get("id")
+    message=request.POST.get("message")
+    student=Students.objects.get(admin=id)
+    token=student.fcm_toke
+    url="https://fcm.googleapis.com/fcm/send"
+    body:{
+        "notification":{
+            "title":"Student Management System",
+            "body":message,
+        },
+        "to":token
+    }
+    headers={"Content-Type":"application/json","Authorization":"key"}
